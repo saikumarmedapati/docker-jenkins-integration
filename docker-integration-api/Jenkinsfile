@@ -5,54 +5,10 @@ pipeline {
         maven 'maven-3.9.6'
     }
 
-    environment {
-        IMAGE_NAME = 'docker-jenkins-integration'
-        DOCKER_HUB_REPO = "saikumar1605/${IMAGE_NAME}"
-    }
-
     stages {
         stage('Build JAR') {
             steps {
                 bat 'mvn clean package'
-            }
-        }
-
-        stage('Docker Build') {
-            steps {
-                bat "docker build -t ${DOCKER_HUB_REPO} ."
-            }
-        }
-
-        stage('Docker Push') {
-            steps {
-                withCredentials([usernamePassword(
-                    credentialsId: 'docker-hub-creds',
-                    usernameVariable: 'DOCKER_USERNAME',
-                    passwordVariable: 'DOCKER_PASSWORD'
-                )]) {
-                    bat 'docker login -u %DOCKER_USERNAME% -p %DOCKER_PASSWORD%'
-                    bat "docker push ${DOCKER_HUB_REPO}"
-                }
-            }
-        }
-
-        stage('Run Container') {
-            steps {
-                bat "docker run -d -p 8080:8080 --name docker-jenkins-test ${DOCKER_HUB_REPO}"
-                bat "ping -n 11 127.0.0.1 >NUL"
-            }
-        }
-
-        stage('Logs') {
-            steps {
-                bat "docker logs docker-jenkins-test"
-            }
-        }
-
-        stage('Cleanup') {
-            steps {
-                bat "docker stop docker-jenkins-test"
-                bat "docker rm docker-jenkins-test"
             }
         }
     }
