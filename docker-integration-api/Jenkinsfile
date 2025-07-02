@@ -21,15 +21,15 @@ pipeline {
 				}
 			}
 		}
-		stage('Push image to Hub'){
-			steps{
-				dir('docker-integration-api') {
-					withCredentials([string(credentialsId: 'dockerhubpwd', variable: 'dockerhubpwd')]) {
-    				bat 'docker login -u saikumar1605 -p ${dockerhubpwd}'
-}
-					bat 'docker push saikumar1605/docker-jenkins-integration'
-				}
-			}
-		}
+		stage('Push image to Hub') {
+            steps {
+                dir('docker-integration-api') {
+                    withCredentials([string(credentialsId: 'dockerhubpwd', variable: 'dockerhubpwd')]) {
+                        bat 'docker login -u saikumar1605 -p %dockerhubpwd%'
+                    }
+                    bat 'docker push saikumar1605/docker-jenkins-integration'
+                }
+            }
+        }
     }
 }
