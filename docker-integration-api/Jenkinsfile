@@ -31,5 +31,14 @@ pipeline {
                 }
             }
         }
+        
+        stage('Run Container') {
+			steps {
+				dir('docker-integration-api') {
+					bat 'docker run -d -p 8086:8086 --name jenkins-container saikumar1605/docker-jenkins-integration'
+					bat 'ping -n 11 127.0.0.1 >nul'
+				}
+			}
+		}
     }
 }
