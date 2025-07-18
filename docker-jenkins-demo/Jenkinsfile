@@ -17,7 +17,7 @@ pipeline{
 		
 		stage('build docker image') {
 			steps{
-				dir('docker-jenkins-demo') {}
+				dir('docker-jenkins-demo') {
 				bat 'docker build -t saikumar1605/docker-jenkins-integration .'
 			}
 		}
