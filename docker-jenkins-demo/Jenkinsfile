@@ -6,12 +6,6 @@ pipeline{
 	}
 	
 	stages{
-		stage('Checkout') {
-    		steps {
-        		git branch: 'main', url: 'https://github.com/Saikumar-sconex/image-insight-api.git'
-    		}
-		}
-
 		
 		stage('build jar') {
 			steps{
