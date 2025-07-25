@@ -11,6 +11,6 @@ public class HelloController {
 	
 	@GetMapping
 	public ResponseEntity<String> getHelloMessage() {
-		return ResponseEntity.ok("Hello, Iam GET API first version");
+		return ResponseEntity.ok("Hello, Iam GET API second version");
 	}
 }
