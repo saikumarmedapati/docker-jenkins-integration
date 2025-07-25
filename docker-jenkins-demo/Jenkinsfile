@@ -6,11 +6,10 @@ pipeline{
 	}
 	
 	stages{
-		
 		stage('build jar') {
-			steps{
+			steps {
 				dir('docker-jenkins-demo') {
-					bat 'mvn clean install'
+					bat 'mvn clean package'
 				}
 			}
 		}
@@ -18,26 +17,27 @@ pipeline{
 		stage('build docker image') {
 			steps{
 				dir('docker-jenkins-demo') {
-				bat 'docker build -t saikumar1605/docker-jenkins-integration .'
+					bat 'docker build -t saikumar1605/docker-jenkins .'
 				}
 			}
 		}
 		
 		stage('push image to hub') {
 			steps{
-				dir('docker-jenkins-demo') {
-					withCredentials([string(credentialsId: 'dockerhubpwd', variable: 'dockerhubpwd')]){
+				dir('docker-integration-demo') {
+					withCredentials([string(credentialsId: 'dockerhubpwd', variable: 'dockerhubpwd')]) {
 						bat 'docker login -u saikumar1605 -p %dockerhubpwd%'
 					}
-					bat 'docker push saikumar1605/docker-jenkins-integration'
+					
+					bat 'docker push saikumar1605/docker-jenkins'
 				}
 			}
 		}
 		
 		stage('run container') {
 			steps{
-				dir('docker-jenkins-demo') {
-					bat 'docker run -d -p 9090:8085 --name jenkins-docker-container saikumar1605/docker-jenkins-integration'
+				dir('docker-integration-demo') {
+					bat 'docker run -d -p 8085:8085 --name docker-jenkins-container saikumar1605/docker-jenkins'
 				}
 			}
 		}
